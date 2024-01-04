@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <style>
+        .animated {
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Employee List(CROS)</h1>
+
+
+    <table id="employeeTable" class="animated fadeIn">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <button id="getEmployeesButton">Get All Employees</button>
+    <button id="clearButton">Clear</button>
+
+
+    <script>
+        async function getEmployees() {
+            try {
+                const response = await fetch('https://localhost:44307/api/employees/GetEmployees'); // Replace with your actual API endpoint
+                const data = await response.json();
+
+                const tbody = document.getElementById('employeeTable').querySelector('tbody');
+                tbody.innerHTML = '';
+
+                data.forEach(employee => {
+                    const row = document.createElement('tr');
+
+                    const idCell = document.createElement('td');
+                    idCell.textContent = employee.ID;
+                    row.appendChild(idCell);
+
+                    const firstnameCell = document.createElement('td');
+                    firstnameCell.textContent = employee.FirstName;
+                    row.appendChild(firstnameCell);
+
+
+                    const lastnameCell = document.createElement('td');
+                    lastnameCell.textContent = employee.LirstName;
+                    row.appendChild(lastnameCell);
+
+                    const genderCell = document.createElement('td');
+                    genderCell.textContent = employee.Gender;
+                    row.appendChild(genderCell);
+                    
+                    const salaryCell = document.createElement('td');
+                    salaryCell.textContent = employee.Salary;
+                    row.appendChild(salaryCell);
+                    // Add more cells for additional employee properties
+
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching employees:', error);
+                // Handle errors gracefully, e.g., display an error message to the user
+            }
+        }
+
+        function clearTable() {
+            const tbody = document.getElementById('employeeTable').querySelector('tbody');
+            tbody.innerHTML = '';
+        }
+
+        document.getElementById('getEmployeesButton').addEventListener('click', getEmployees);
+        document.getElementById('clearButton').addEventListener('click', clearTable);
+
+    </script>
+
+</body>
+</html>

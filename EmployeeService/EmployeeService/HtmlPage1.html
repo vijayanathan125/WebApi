@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Employee List</h1>
+
+    <button onclick="getEmployeeList()">Get Employee List</button>
+    <button onclick="clearEmployeeList()">Clear</button>
+
+    <table id="employeeTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody id="employeeBody"></tbody>
+    </table>
+
+    <script>
+        function getEmployeeList() {
+            // Replace 'your-api-endpoint' with the actual endpoint of your API
+            const apiEndpoint = 'https://localhost:44307/api/employees/GetEmployees';
+
+            // Fetch data from the API
+            fetch(apiEndpoint)
+                .then(response => response.json())
+                .then(data => {
+                    // Process the data and display it in the table
+                    const employeeTableBody = document.getElementById('employeeBody');
+                    // Clear existing table rows
+                    employeeTableBody.innerHTML = '';
+
+                    data.forEach(employee => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${employee.ID}</td><td>${employee.FirstName}</td><td>${employee.LastName}</td>${employee.Gender}<td></td>${employee.Salary}<td></td>`;
+                        employeeTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function clearEmployeeList() {
+            const employeeTableBody = document.getElementById('employeeBody');
+            // Clear the employee table
+            employeeTableBody.innerHTML = '';
+        }
+    </script>
+
+</body>
+</html>
